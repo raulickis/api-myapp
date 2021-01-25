@@ -2,13 +2,12 @@ package api
 
 import (
 	"github.com/autorei/api-myapp/config"
-	"github.com/autorei/api-myapp/internal/database/migrations"
 	"github.com/autorei/api-myapp/internal/usuarios"
 	"github.com/gin-gonic/gin"
 )
 
 func Run() {
-	migrations.RunMigrations()
+
 	r := SetupRoutes()
 	_ = r.Run(":" + config.APP_PORT)
 }

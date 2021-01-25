@@ -5,6 +5,7 @@ import (
 	"github.com/autorei/api-myapp/api"
 	"github.com/autorei/api-myapp/config"
 	"github.com/autorei/api-myapp/internal/database"
+	"github.com/autorei/api-myapp/internal/database/migrations"
 	_ "github.com/joho/godotenv/autoload"
 )
 
@@ -20,6 +21,8 @@ func main() {
 		panic(err.Error())
 	}
 
+	migrations.RunMigrations()
+	
 	api.Run()
 
 }
