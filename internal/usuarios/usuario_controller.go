@@ -75,7 +75,7 @@ func InserirUsuario(ctx *gin.Context) {
 	usuario.Nome      = form.Nome
 	usuario.Documento = form.Documento
 	usuario.Email     = form.Email
-	usuario.Ddd       = &form.Documento
+	usuario.Ddd       = &form.Ddd
 	usuario.Telefone  = &form.Telefone
 	usuario.FotoUrl   = form.FotoUrl
 	for _, enderecoForm := range  form.Enderecos {
@@ -160,7 +160,7 @@ func AtualizarUsuario(ctx *gin.Context) {
 	usuario.Nome      = form.Nome
 	usuario.Documento = form.Documento
 	usuario.Email     = form.Email
-	usuario.Ddd       = &form.Documento
+	usuario.Ddd       = &form.Ddd
 	usuario.Telefone  = &form.Telefone
 	usuario.FotoUrl   = form.FotoUrl
 

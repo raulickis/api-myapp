@@ -22,7 +22,7 @@ func main() {
 	}
 
 	migrations.RunMigrations()
-	
+
 	api.Run()
 
 }
