@@ -149,6 +149,177 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "endereco",
+			"item": [
+				{
+					"name": "listar todos enderecos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9990/cadastro/endereco",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9990",
+							"path": [
+								"cadastro",
+								"endereco"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listar enderecos de um usuário",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9990/cadastro/endereco?user_id=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9990",
+							"path": [
+								"cadastro",
+								"endereco"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "obter endereco por id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9990/cadastro/endereco/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9990",
+							"path": [
+								"cadastro",
+								"endereco",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "inserir endereco",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"usuario_id\": 2,\n    \"cep\": \"05444-090\",\n    \"rua\": \"Avenida Rebouças nova\",\n    \"numero\": \"3270\",\n    \"bairro\": \"Jardim Europa\",\n    \"cidade\": \"São Paulo\",\n    \"uf\": \"SP\",\n    \"data_cadastro\": \"2021-01-25T20:57:37.471601Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9990/cadastro/endereco",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9990",
+							"path": [
+								"cadastro",
+								"endereco"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "atualizar endereco por id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"usuario_id\": 2,\n    \"cep\": \"05444-090\",\n    \"rua\": \"Avenida Rebouças nova nova\",\n    \"numero\": \"3270\",\n    \"bairro\": \"Jardim Europa\",\n    \"cidade\": \"São Paulo\",\n    \"uf\": \"SP\",\n    \"data_cadastro\": \"2021-01-25T20:57:37.471601Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9990/cadastro/endereco/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9990",
+							"path": [
+								"cadastro",
+								"endereco",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "7"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deletar endereco por id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9990/cadastro/endereco/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9990",
+							"path": [
+								"cadastro",
+								"endereco",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "7"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"protocolProfileBehavior": {}

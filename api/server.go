@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/autorei/api-myapp/config"
+	"github.com/autorei/api-myapp/internal/enderecos"
 	"github.com/autorei/api-myapp/internal/usuarios"
 	"github.com/gin-gonic/gin"
 )
@@ -29,6 +30,15 @@ func SetupRoutes() *gin.Engine {
 		cadastroRouter.GET("/:id", usuarios.ObterUsuario)
 		cadastroRouter.PUT("/:id", usuarios.AtualizarUsuario)
 		cadastroRouter.DELETE("/:id", usuarios.ExcluirUsuario)
+	}
+
+	cadastroEnderecosRouter := router.Group("/cadastro/endereco")
+	{
+		cadastroEnderecosRouter.POST("", enderecos.InserirEndereco)
+		cadastroEnderecosRouter.GET("", enderecos.ListarEnderecos)
+		cadastroEnderecosRouter.GET("/:id", enderecos.ObterEndereco)
+		cadastroEnderecosRouter.PUT("/:id", enderecos.AtualizarEndereco)
+		cadastroEnderecosRouter.DELETE("/:id", enderecos.ExcluirEndereco)
 	}
 
 	return router
