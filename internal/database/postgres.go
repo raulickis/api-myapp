@@ -2,8 +2,8 @@ package database
 
 import (
 	"sync"
-	"github.com/autorei/api-myapp/config"
-	db "github.com/autorei/api-myapp/tools"
+	"github.com/raulickis/api-myapp/config"
+	db "github.com/raulickis/api-myapp/tools"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )

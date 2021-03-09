@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/autorei/api-myapp/api"
-	"github.com/autorei/api-myapp/config"
-	"github.com/autorei/api-myapp/internal/database"
-	"github.com/autorei/api-myapp/internal/database/migrations"
+	"github.com/raulickis/api-myapp/api"
+	"github.com/raulickis/api-myapp/config"
+	"github.com/raulickis/api-myapp/internal/database"
+	"github.com/raulickis/api-myapp/internal/database/migrations"
 	_ "github.com/joho/godotenv/autoload"
 )
 

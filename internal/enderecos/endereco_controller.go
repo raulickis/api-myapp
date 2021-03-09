@@ -1,7 +1,7 @@
 package enderecos
 
 import (
-	"github.com/autorei/api-myapp/internal/database/domains"
+	"github.com/raulickis/api-myapp/internal/database/domains"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"

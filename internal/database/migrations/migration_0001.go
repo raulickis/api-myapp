@@ -1,7 +1,7 @@
 package migrations
 
 import (
-	"github.com/autorei/api-myapp/internal/database/domains"
+	"github.com/raulickis/api-myapp/internal/database/domains"
 	"github.com/jinzhu/gorm"
 	"gopkg.in/gormigrate.v1"
 )

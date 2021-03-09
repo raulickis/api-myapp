@@ -2,7 +2,7 @@ package migrations
 
 import (
 	"log"
-	db "github.com/autorei/api-myapp/internal/database"
+	db "github.com/raulickis/api-myapp/internal/database"
 	"gopkg.in/gormigrate.v1"
 )
 

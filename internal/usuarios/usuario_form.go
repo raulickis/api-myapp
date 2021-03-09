@@ -2,7 +2,7 @@ package usuarios
 
 import (
 	"fmt"
-	"github.com/autorei/api-myapp/internal/utils"
+	"github.com/raulickis/api-myapp/internal/utils"
 	"gopkg.in/go-playground/validator.v9"
 )
 

@@ -1,4 +1,4 @@
-module github.com/autorei/api-myapp
+module github.com/raulickis/api-myapp
 
 go 1.14
 

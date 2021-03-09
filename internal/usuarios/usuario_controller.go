@@ -1,7 +1,7 @@
 package usuarios
 
 import (
-	"github.com/autorei/api-myapp/internal/database/domains"
+	"github.com/raulickis/api-myapp/internal/database/domains"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -37,7 +37,7 @@ func ObterUsuario(ctx *gin.Context) {
 
 	if err != nil {
 		if err.Error() == "record not found" {
-			ctx.JSON(http.StatusNotFound, "Registro não encontrado")
+			ctx.JSON(http.StatusNotFound, "Registro não encontrado cara!")
 		} else {
 			ctx.JSON(http.StatusInternalServerError, err.Error())
 		}

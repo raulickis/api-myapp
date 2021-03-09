@@ -1,8 +1,8 @@
 package enderecos
 
 import (
-	"github.com/autorei/api-myapp/internal/database"
-	"github.com/autorei/api-myapp/internal/database/domains"
+	"github.com/raulickis/api-myapp/internal/database"
+	"github.com/raulickis/api-myapp/internal/database/domains"
 )
 
 func ListAddresses() (*[]domains.Endereco, error) {

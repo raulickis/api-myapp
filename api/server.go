@@ -1,9 +1,9 @@
 package api
 
 import (
-	"github.com/autorei/api-myapp/config"
-	"github.com/autorei/api-myapp/internal/enderecos"
-	"github.com/autorei/api-myapp/internal/usuarios"
+	"github.com/raulickis/api-myapp/config"
+	"github.com/raulickis/api-myapp/internal/enderecos"
+	"github.com/raulickis/api-myapp/internal/usuarios"
 	"github.com/gin-gonic/gin"
 )
 
