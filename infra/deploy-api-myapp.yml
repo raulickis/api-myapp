@@ -1,0 +1,63 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: api-myapp
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: api-myapp
+    spec:
+      containers:
+        - name: api-myapp
+          image: raulickis/api-myapp:latest
+          # imagePullPolicy: "IfNotPresent"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9990
+          livenessProbe:
+            httpGet:
+              path: /health/check
+              port: 9990
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 10
+            successThreshold: 1
+            failureThreshold: 5
+          readinessProbe:
+            httpGet:
+              path: /health/check
+              port: 9990
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 10
+            successThreshold: 1
+            failureThreshold: 5
+          resources:
+            requests:
+              cpu: "100m"
+            limits:
+              cpu: "1500m"
+              memory: "1Gi"
+          envFrom:
+            - configMapRef:
+                name: api-myapp-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-myapp
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 9990
+      protocol: TCP
+  selector:
+    app: api-myapp

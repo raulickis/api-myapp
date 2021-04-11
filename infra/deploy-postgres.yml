@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: myapp-postgres-pv
+  labels:
+    type: local
+    app: postgres
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: myapp-postgres-pv-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 90Mi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: myapp-postgres-config
+  labels:
+    app: myapp-postgres
+data:
+  POSTGRES_DB: postgres
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: "1234"
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: myapp-postgres
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: myapp-postgres
+    spec:
+      containers:
+        - name: myapp-postgres
+          image: postgres:10.12-alpine
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: myapp-postgres-config
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgredb
+      volumes:
+        - name: postgredb
+          persistentVolumeClaim:
+            claimName: myapp-postgres-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-postgres
+  labels:
+    app: myapp-postgres
+spec:
+  type: NodePort
+  ports:
+    - port: 5432
+  selector:
+    app: myapp-postgres
