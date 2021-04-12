@@ -60,21 +60,39 @@ kubectl apply -f prometheus-alertmanager-deploy.yml
 
 # Grafana
 
+### Note: The following data source configuration is for Prometheus. If you have more data sources, you can add more data sources with different YAMLs under the data section.
+```
+kubectl apply -f prometheus-grafana-datasource-config.yml
+```
+
+### Note: This Grafana deployment does not use a persistent volume. If you restart the pod all changes will be gone. Use a persistent volume if you are deploying Grafana for your project requirements. It will persist all the configs and data that Grafana uses.
+```
+kubectl apply -f prometheus-grafana-deploy.yml
+```
 
 
 # Prometheus Node Exporter
 
-
+### To get all the kubernetes node-level system metrics, you need to have a node-exporter running in all the kubernetes nodes. It collects all the Linux system metrics and exposes them via /metrics endpoint on port 9100
+```
+kubectl apply -f prometheus-node-exporter-daemonset.yml
+```
 
 
 # Observações
 
 Para ver o dashboard do Prometheus: 
 minikube service --url prometheus-service -n monitoring
+Para ver como fazer queries: https://prometheus.io/docs/prometheus/latest/querying/basics/
 
 Para ver o dashboard do Alert Manager: 
 minikube service --url alertmanager -n monitoring
 
+Para ver o dashboard do Grafana: 
+minikube service --url grafana -n monitoring
+Credentials: admin / admin
+Import dashboard 8588 and asign it to Prometheus
+Import dashboard 1860 and asign it to Prometheus
 
 
 # Kubernetes Metrics Server - Somente Metricas Instantaneas 
@@ -111,10 +129,20 @@ spec:
 ```  
 
 
+# Monitor Linux Servers Using Prometheus
+Somente para sistemas Linux que estão na mesma rede (ou SG), mas fora do Kubernetes 
+https://devopscube.com/monitor-linux-servers-prometheus-node-exporter/
+
+
 # Material de apoio para o Prometheus
 
-# https://devopscube.com/setup-prometheus-monitoring-on-kubernetes/
-# https://devopscube.com/setup-kube-state-metrics/
-# https://devopscube.com/setup-grafana-kubernetes/
-# https://devopscube.com/node-exporter-kubernetes/
-# https://devopscube.com/alert-manager-kubernetes-guide/
+### https://devopscube.com/setup-prometheus-monitoring-on-kubernetes/
+### https://devopscube.com/setup-kube-state-metrics/
+### https://devopscube.com/setup-grafana-kubernetes/
+### https://devopscube.com/node-exporter-kubernetes/
+### https://devopscube.com/alert-manager-kubernetes-guide/
+### https://devopscube.com/monitor-linux-servers-prometheus-node-exporter/
+
+
+
+

@@ -9,7 +9,9 @@ require (
 	github.com/go-sql-driver/mysql v1.4.1
 	github.com/jinzhu/gorm v1.9.12
 	github.com/joho/godotenv v1.3.0
+	github.com/prometheus/client_golang v1.10.0
 	github.com/satori/go.uuid v1.2.0
+	github.com/sirupsen/logrus v1.6.0
 	golang.org/x/text v0.3.2
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/go-playground/validator.v9 v9.31.0

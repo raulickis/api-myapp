@@ -48,3 +48,9 @@ curl http://localhost:9990/cadastro/usuario
 3 - Executar os endpoints para cadastro de usuarios e enderecos
 
 
+# Instrumentando a API para colher métricas no Prometheus
+```
+go get github.com/prometheus/client_golang/prometheus
+go get github.com/prometheus/client_golang/prometheus/promauto
+go get github.com/prometheus/client_golang/prometheus/promhttp
+```

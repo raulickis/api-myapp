@@ -1,10 +1,13 @@
 package api
 
 import (
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/raulickis/api-myapp/config"
 	"github.com/raulickis/api-myapp/internal/enderecos"
 	"github.com/raulickis/api-myapp/internal/usuarios"
 	"github.com/gin-gonic/gin"
+	"github.com/raulickis/api-myapp/tools"
+	"strings"
 )
 
 func Run() {
@@ -21,6 +24,49 @@ func SetupRoutes() *gin.Engine {
 		gin.Recovery(),
 	)
 	router.GET("/health/check", CheckHealth)
+
+
+
+
+	// Optional custom metrics list
+	customMetrics := []*tools.Metric{
+		&tools.Metric{
+			ID:				"1234",				// optional string
+			Name:			"test_metric",			// required string
+			Description:	"Counter test metric",	// required string
+			Type:			"counter",			// required string
+		},
+		&tools.Metric{
+			ID:				"1235",				// Identifier
+			Name:			"test_metric_2",		// Metric Name
+			Description:	"Summary test metric",	// Help Description
+			Type:			"summary", // type associated with prometheus collector
+		},
+		// Type Options:
+		//	counter, counter_vec, gauge, gauge_vec,
+		//	histogram, histogram_vec, summary, summary_vec
+	}
+	prom := tools.NewPrometheus("gin", customMetrics)
+
+	// Preserve low cardinality when request have params in path
+	prom.ReqCntURLLabelMappingFn = func(c *gin.Context) string {
+		url := c.Request.URL.Path
+		for _, p := range c.Params {
+			if p.Key == "id" {
+				url = strings.Replace(url, p.Value, ":id", 1)
+				break
+			}
+		}
+		return url
+	}
+
+	prom.Use(router)
+
+
+	//router.GET("/metrics", PrometheusHandler)
+
+
+
 
 	// API
 	cadastroRouter := router.Group("/cadastro/usuario")
@@ -48,4 +94,8 @@ func CheckHealth(ctx *gin.Context) {
 	ctx.JSON(200, gin.H{
 		"status": "ok",
 	})
+}
+
+func PrometheusHandler(ctx *gin.Context) {
+	promhttp.Handler()
 }
