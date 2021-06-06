@@ -13,18 +13,32 @@ spec:
         disabled: true
   config:
     name: elastic-apm-server
-    apm-server:
-      jaeger.grpc.enabled: true
-      jaeger.http.enabled: true
-      rum.enabled: true
-      rum.event_rate.limit: 300
-      rum.event_rate.lru_size: 1000
-      rum.allow_origins: ['']
-      rum.library_pattern: "node_modules|bower_components|~"
-      rum.exclude_from_grouping: "^/webpack"
-      rum.source_mapping.enabled: true
-      rum.source_mapping.cache.expiration: 5m
-      rum.source_mapping.index_pattern: "apm--sourcemap*"
+    # https://www.elastic.co/guide/en/apm/server/current/configuring-howto-apm-server.html
+    #apm-server:
+    #  jaeger.grpc.enabled: true
+    #  jaeger.http.enabled: true
+    #  rum.enabled: true
+    #  rum.event_rate.limit: 300
+    #  rum.event_rate.lru_size: 1000
+    #  rum.allow_origins: ['']
+    #  rum.library_pattern: "node_modules|bower_components|~"
+    #  rum.exclude_from_grouping: "^/webpack"
+    #  rum.source_mapping.enabled: true
+    #  rum.source_mapping.cache.expiration: 5m
+    #  rum.source_mapping.index_pattern: "apm--sourcemap*"
+  podTemplate:
+    spec:
+      containers:
+        - name: apm-server
+          resources:
+            requests:
+              memory: 1Gi
+              cpu: 0.5
+            limits:
+              #memory: 2Gi
+              #cpu: 2
+              memory: 1Gi
+              cpu: 1
   elasticsearchRef:
     name: elasticsearch
   kibanaRef:

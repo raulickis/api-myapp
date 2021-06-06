@@ -47,7 +47,7 @@ spec:
               cpu: "100m"
             limits:
               cpu: "300m"
-              memory: "1Gi"
+              memory: "100Mi"
           envFrom:
             - configMapRef:
                 name: api-myapp-config

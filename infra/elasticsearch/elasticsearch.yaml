@@ -9,11 +9,8 @@ spec:
   - name: default
     count: 1
     config:
-      # most Elasticsearch configuration parameters are possible to set, e.g: node.attr.attr_name: attr_value
-      node.master: true
-      node.data: true
-      node.ingest: true
-      node.ml: false
+      # https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html
+      node.roles: ["master", "data", "ingest"]
       # NOT RECOMMENDED FOR PRODUTCTION - this allows ES to run on nodes even if their vm.max_map_count has not been increased, at a performance cost
       # https://www.elastic.co/guide/en/cloud-on-k8s/current/k8s-virtual-memory.html
       node.store.allow_mmap: false
@@ -46,15 +43,18 @@ spec:
         # automountServiceAccountToken: true
         containers:
           - name: elasticsearch
-            # specify resource limits and requests
+            # specify resource limits and requests (production min 4GB)
             resources:
+              request:
+                memory: 3Gi
+                cpu: 0.5
               limits:
                 memory: 3Gi
                 cpu: 1
             env:
+              # Heap size is automatic after Elastic 7.11, so not recommended for Production:
               - name: ES_JAVA_OPTS
                 value: "-Xms2g -Xmx2g"
-    #   # request 2Gi of persistent data storage for pods in this topology element
     volumeClaimTemplates:
       - metadata:
           name: elasticsearch-data
@@ -64,7 +64,7 @@ spec:
             - ReadWriteOnce
           resources:
             requests:
-              #storage: 100Gi
+              #storage: 300Gi
               storage: 1Gi
   http:
     tls:
