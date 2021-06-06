@@ -1,0 +1,48 @@
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  name: kibana
+spec:
+  version: 7.13.0
+  count: 1
+  config:
+    # https://www.elastic.co/guide/en/kibana/current/monitoring-metricbeat.html
+    monitoring.kibana.collection.enabled: false
+    xpack.security.enabled: false
+  elasticsearchRef:
+    name: elasticsearch
+  #http:
+  #  service:
+  #    spec:
+  #      type: LoadBalancer
+  # this shows how to customize the Kibana pod
+  # with labels and resource limits
+  podTemplate:
+    metadata:
+      labels:
+        app: kibana
+        scrape: kb
+    spec:
+      containers:
+        - name: kibana
+          resources:
+            limits:
+              memory: 1Gi
+              cpu: 1
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /api/status
+              port: 5601
+              scheme: HTTPS
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+
+  #Modify kibana service it you want to expose it as LoadBalancer
+  #apiVersion: v1
+  #kind: Service
+  #metadata:
+  #  annotations:
+  #    service.beta.kubernetes.io/aws-load-balancer-internal: 0.0.0.0/0

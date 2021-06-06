@@ -37,16 +37,19 @@ data:
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: "1234"
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: myapp-postgres
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: myapp-postgres
   template:
     metadata:
       labels:
-        app: myapp-postgres
+        app.kubernetes.io/name: myapp-postgres
     spec:
       containers:
         - name: myapp-postgres
@@ -76,4 +79,4 @@ spec:
   ports:
     - port: 5432
   selector:
-    app: myapp-postgres
+    app.kubernetes.io/name: myapp-postgres

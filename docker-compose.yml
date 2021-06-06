@@ -13,22 +13,22 @@ services:
     environment:
       - POSTGRES_PASSWORD=1234
 
-  mysql:
-    container_name: mysql
-    image: 'mysql:5.6.34'
-    environment:
-      MYSQL_DATABASE: "myapp"
-      MYSQL_USER: "usuario"
-      MYSQL_PASSWORD : "1234"
-      MYSQL_ROOT_PASSWORD: "5678"
-      MYSQL_ROOT_HOST: "%"
-    ports:
-      - '3306:3306'
-    extra_hosts:
-      - "host.docker.internal:$DOCKER_HOST_IP"
-    volumes:
-      - './../mysql/data:/var/lib/mysql'
-      - './resources/my.cnf:/etc/mysql/my.cnf'
+#  mysql:
+#    container_name: mysql
+#    image: 'mysql:5.6.34'
+#    environment:
+#      MYSQL_DATABASE: "myapp"
+#      MYSQL_USER: "usuario"
+#      MYSQL_PASSWORD : "1234"
+#      MYSQL_ROOT_PASSWORD: "5678"
+#      MYSQL_ROOT_HOST: "%"
+#    ports:
+#      - '3306:3306'
+#    extra_hosts:
+#      - "host.docker.internal:$DOCKER_HOST_IP"
+#    volumes:
+#      - './../mysql/data:/var/lib/mysql'
+#      - './resources/my.cnf:/etc/mysql/my.cnf'
 
   api-myapp:
     container_name: api-myapp

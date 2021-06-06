@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: api-myapp
@@ -9,10 +9,13 @@ spec:
     rollingUpdate:
       maxSurge: 2
       maxUnavailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: api-myapp
   template:
     metadata:
       labels:
-        app: api-myapp
+        app.kubernetes.io/name: api-myapp
     spec:
       containers:
         - name: api-myapp
@@ -43,7 +46,7 @@ spec:
             requests:
               cpu: "100m"
             limits:
-              cpu: "1500m"
+              cpu: "300m"
               memory: "1Gi"
           envFrom:
             - configMapRef:
@@ -56,8 +59,8 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 80
+    - port: 9990
       targetPort: 9990
       protocol: TCP
   selector:
-    app: api-myapp
+    app.kubernetes.io/name: api-myapp

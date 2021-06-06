@@ -1,0 +1,103 @@
+# This sample sets up an Elasticsearch cluster with 3 nodes.
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: elasticsearch
+spec:
+  version: 7.13.0
+  nodeSets:
+  - name: default
+    count: 1
+    config:
+      # most Elasticsearch configuration parameters are possible to set, e.g: node.attr.attr_name: attr_value
+      node.master: true
+      node.data: true
+      node.ingest: true
+      node.ml: false
+      # NOT RECOMMENDED FOR PRODUTCTION - this allows ES to run on nodes even if their vm.max_map_count has not been increased, at a performance cost
+      # https://www.elastic.co/guide/en/cloud-on-k8s/current/k8s-virtual-memory.html
+      node.store.allow_mmap: false
+      # https://www.elastic.co/guide/en/elasticsearch/reference/current/configuring-metricbeat.html
+      xpack.monitoring.collection.enabled: true
+      xpack.monitoring.elasticsearch.collection.enabled: false
+      # this allows anonymous auth
+      xpack.security.authc:
+        anonymous:
+          username: anonymous
+          roles: superuser
+          authz_exception: false
+    podTemplate:
+      metadata:
+        labels:
+          # additional labels for pods
+          app: elasticsearch
+          scrape: es
+      spec:
+        # PRODUCTION - this changes the kernel setting on the node to allow ES to use mmap
+        # if you uncomment this init container you will likely also want to remove the
+        # "node.store.allow_mmap: false" setting above
+        # initContainers:
+        # - name: sysctl
+        #   securityContext:
+        #     privileged: true
+        #   command: [‘sh’, ‘-c’, ‘sysctl -w vm.max_map_count=262144']
+        ###
+        # uncomment the line below if you are using a service mesh such as linkerd2 that uses service account tokens for pod identification.
+        # automountServiceAccountToken: true
+        containers:
+          - name: elasticsearch
+            # specify resource limits and requests
+            resources:
+              limits:
+                memory: 3Gi
+                cpu: 1
+            env:
+              - name: ES_JAVA_OPTS
+                value: "-Xms2g -Xmx2g"
+    #   # request 2Gi of persistent data storage for pods in this topology element
+    volumeClaimTemplates:
+      - metadata:
+          name: elasticsearch-data
+        spec:
+          #storageClassName: gp2
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              #storage: 100Gi
+              storage: 1Gi
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
+
+  # # inject secure settings into Elasticsearch nodes from k8s secrets references
+  # secureSettings:
+  # - secretName: ref-to-secret
+  # - secretName: another-ref-to-secret
+  #   # expose only a subset of the secret keys (optional)
+  #   entries:
+  #   - key: value1
+  #     path: newkey # project a key to a specific path (optional)
+  # http:
+  #   service:
+  #     spec:
+  #       # expose this cluster Service with a LoadBalancer
+  #       type: LoadBalancer
+  #   tls:
+  #     selfSignedCertificate:
+  #       # add a list of SANs into the self-signed HTTP certificate
+  #       subjectAltNames:
+  #       - ip: 192.168.1.2
+  #       - ip: 192.168.1.3
+  #       - dns: elasticsearch-sample.example.com
+  #     certificate:
+  #       # provide your own certificate
+  #       secretName: my-cert
+
+  #if you want to change the elasticsearch service with “LoadBalancer” type, remember to modify it. If you only want it as an internal ELB you need to add the annotation
+  #apiVersion: v1
+  #kind: Service
+  #metadata:
+  #  annotations:
+  #    service.beta.kubernetes.io/aws-load-balancer-internal: 0.0.0.0/0

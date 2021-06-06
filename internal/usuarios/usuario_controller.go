@@ -14,7 +14,7 @@ type ResponseError struct {
 
 func ListarUsuarios(ctx *gin.Context) {
 
-	usuarios, err := ListUsers()
+	usuarios, err := ListUsers(ctx.Request.Context())
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err.Error())
@@ -33,7 +33,7 @@ func ObterUsuario(ctx *gin.Context) {
 		return
 	}
 
-	usuario, err := GetUser(id)
+	usuario, err := GetUser(ctx.Request.Context(), id)
 
 	if err != nil {
 		if err.Error() == "record not found" {
@@ -106,7 +106,7 @@ func InserirUsuario(ctx *gin.Context) {
 		return
 	}
 
-	usuarioCriado, err := RegisterUser(&usuario)
+	usuarioCriado, err := RegisterUser(ctx.Request.Context(), &usuario)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err.Error())
 		return
@@ -124,7 +124,7 @@ func AtualizarUsuario(ctx *gin.Context) {
 		return
 	}
 
-	usuario, err := GetUser(id)
+	usuario, err := GetUser(ctx.Request.Context(), id)
 
 	if err != nil {
 		if err.Error() == "record not found" {
@@ -172,7 +172,7 @@ func AtualizarUsuario(ctx *gin.Context) {
 		return
 	}
 
-	usuarioAtualizado, err := UpdateUser(usuario)
+	usuarioAtualizado, err := UpdateUser(ctx.Request.Context(), usuario)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err.Error())
 		return
@@ -190,7 +190,7 @@ func ExcluirUsuario(ctx *gin.Context) {
 		return
 	}
 
-	usuarioDb, err := GetUser(id)
+	usuarioDb, err := GetUser(ctx.Request.Context(), id)
 
 	if err != nil {
 		if err.Error() == "record not found" {
@@ -201,7 +201,7 @@ func ExcluirUsuario(ctx *gin.Context) {
 		return
 	}
 
-	err = DeleteUser(usuarioDb)
+	err = DeleteUser(ctx.Request.Context(), usuarioDb)
 
 	ctx.JSON(http.StatusOK, "Registro deletado")
 }

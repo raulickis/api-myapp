@@ -161,5 +161,4 @@ data:
       - job_name: api-myapp
         scrape_interval: 10s
         static_configs:
-        - targets:
-          - localhost:9990
+        - targets: ['api-myapp.default.svc.cluster.local:9990']

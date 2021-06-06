@@ -1,12 +1,13 @@
 package usuarios
 
 import (
+	"context"
 	"github.com/raulickis/api-myapp/internal/database"
 	"github.com/raulickis/api-myapp/internal/database/domains"
 )
 
-func ListUsers() (*[]domains.Usuario, error) {
-	var db = (&database.Repository{}).GetInstance()
+func ListUsers(ctx context.Context) (*[]domains.Usuario, error) {
+	var db = (&database.Repository{}).GetInstanceCtx(ctx)
 	usuarios := &[]domains.Usuario{}
 	err := db.
 		Preload("Enderecos").
@@ -15,8 +16,8 @@ func ListUsers() (*[]domains.Usuario, error) {
 	return usuarios, err
 }
 
-func GetUser(id int) (*domains.Usuario, error) {
-	var db = (&database.Repository{}).GetInstance()
+func GetUser(ctx context.Context,id int) (*domains.Usuario, error) {
+	var db = (&database.Repository{}).GetInstanceCtx(ctx)
 	usuario := &domains.Usuario{}
 	err := db.Where("id = ?", id).
 		Preload("Enderecos").
@@ -24,20 +25,20 @@ func GetUser(id int) (*domains.Usuario, error) {
 	return usuario, err
 }
 
-func RegisterUser(usuario *domains.Usuario) (*domains.Usuario, error) {
-	var db = (&database.Repository{}).GetInstance()
+func RegisterUser(ctx context.Context, usuario *domains.Usuario) (*domains.Usuario, error) {
+	var db = (&database.Repository{}).GetInstanceCtx(ctx)
 	err := db.Create(usuario).Error
 	return usuario, err
 }
 
-func UpdateUser(usuario *domains.Usuario) (*domains.Usuario, error) {
-	var db = (&database.Repository{}).GetInstance()
+func UpdateUser(ctx context.Context, usuario *domains.Usuario) (*domains.Usuario, error) {
+	var db = (&database.Repository{}).GetInstanceCtx(ctx)
 	err := db.Save(usuario).Error
 	return usuario, err
 }
 
-func DeleteUser(usuario *domains.Usuario) (error) {
-	var db = (&database.Repository{}).GetInstance()
+func DeleteUser(ctx context.Context, usuario *domains.Usuario) (error) {
+	var db = (&database.Repository{}).GetInstanceCtx(ctx)
 	err := db.Delete(usuario).Error
 	return err
 }

@@ -24,14 +24,14 @@ func ListarEnderecos(ctx *gin.Context) {
 			return
 		}
 
-		enderecos, err = ListAddressesByUser(userId)
+		enderecos, err = ListAddressesByUser(ctx.Request.Context(), userId)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, err.Error())
 			return
 		}
 
 	} else {
-		enderecos, err = ListAddresses()
+		enderecos, err = ListAddresses(ctx.Request.Context())
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, err.Error())
 			return
@@ -50,7 +50,7 @@ func ObterEndereco(ctx *gin.Context) {
 		return
 	}
 
-	endereco, err := GetAddress(id)
+	endereco, err := GetAddress(ctx.Request.Context(), id)
 
 	if err != nil {
 		if err.Error() == "record not found" {
@@ -98,7 +98,7 @@ func InserirEndereco(ctx *gin.Context) {
 		return
 	}
 
-	enderecoCriado, err := RegisterAddress(&endereco)
+	enderecoCriado, err := RegisterAddress(ctx.Request.Context(), &endereco)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err.Error())
 		return
@@ -116,7 +116,7 @@ func AtualizarEndereco(ctx *gin.Context) {
 		return
 	}
 
-	endereco, err := GetAddress(id)
+	endereco, err := GetAddress(ctx.Request.Context(), id)
 
 	if err != nil {
 		if err.Error() == "record not found" {
@@ -158,7 +158,7 @@ func AtualizarEndereco(ctx *gin.Context) {
 		return
 	}
 
-	enderecoAtualizado, err := UpdateAddress(endereco)
+	enderecoAtualizado, err := UpdateAddress(ctx.Request.Context(), endereco)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err.Error())
 		return
@@ -176,7 +176,7 @@ func ExcluirEndereco(ctx *gin.Context) {
 		return
 	}
 
-	enderecoDb, err := GetAddress(id)
+	enderecoDb, err := GetAddress(ctx.Request.Context(), id)
 
 	if err != nil {
 		if err.Error() == "record not found" {
@@ -187,7 +187,7 @@ func ExcluirEndereco(ctx *gin.Context) {
 		return
 	}
 
-	err = DeleteAddress(enderecoDb)
+	err = DeleteAddress(ctx.Request.Context(), enderecoDb)
 
 	ctx.JSON(http.StatusOK, "Registro deletado")
 }

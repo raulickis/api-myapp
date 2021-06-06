@@ -1,0 +1,48 @@
+apiVersion: apm.k8s.elastic.co/v1
+kind: ApmServer
+metadata:
+  name: elastic-apm-server
+  namespace: default
+spec:
+  version: 7.13.0
+  count: 1
+  #hostNetwork: true # parece nao funcionar
+  http:
+    tls:  ### for make it easy to test, let's disable tls for now
+      selfSignedCertificate:
+        disabled: true
+  config:
+    name: elastic-apm-server
+    apm-server:
+      jaeger.grpc.enabled: true
+      jaeger.http.enabled: true
+      rum.enabled: true
+      rum.event_rate.limit: 300
+      rum.event_rate.lru_size: 1000
+      rum.allow_origins: ['']
+      rum.library_pattern: "node_modules|bower_components|~"
+      rum.exclude_from_grouping: "^/webpack"
+      rum.source_mapping.enabled: true
+      rum.source_mapping.cache.expiration: 5m
+      rum.source_mapping.index_pattern: "apm--sourcemap*"
+  elasticsearchRef:
+    name: elasticsearch
+  kibanaRef:
+    name: kibana
+---
+apiVersion: v1
+data:
+  secret-token: aXE2QlF5NDgzQjNwN3RtRUcyZkxCMzQ3 # Token decoded => iq6BQy483B3p7tmEG2fLB347
+kind: Secret
+metadata:
+  labels:
+    apm.k8s.elastic.co/name: elastic-apm-server
+    common.k8s.elastic.co/type: apm-server
+    eck.k8s.elastic.co/credentials: "true"
+    eck.k8s.elastic.co/owner-kind: ApmServer
+    eck.k8s.elastic.co/owner-name: elastic-apm-server
+    eck.k8s.elastic.co/owner-namespace: default
+  name: elastic-apm-server-apm-token
+  namespace: default
+type: Opaque
+

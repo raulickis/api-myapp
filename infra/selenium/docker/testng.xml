@@ -1,0 +1,15 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite thread-count="2" name="SeleniumGridDocker" parallel="tests">
+
+
+    <test name="Chrome Test">
+        <parameter name="browser" value="chrome" />
+        <parameter name="Port" value="5900" />
+        <classes>
+            <class name="TestClass" />
+        </classes>
+    </test>
+
+
+</suite>

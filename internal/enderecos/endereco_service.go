@@ -1,12 +1,13 @@
 package enderecos
 
 import (
+	"context"
 	"github.com/raulickis/api-myapp/internal/database"
 	"github.com/raulickis/api-myapp/internal/database/domains"
 )
 
-func ListAddresses() (*[]domains.Endereco, error) {
-	var db = (&database.Repository{}).GetInstance()
+func ListAddresses(ctx context.Context) (*[]domains.Endereco, error) {
+	var db = (&database.Repository{}).GetInstanceCtx(ctx)
 	enderecos := &[]domains.Endereco{}
 	err := db.
 		Order("id").
@@ -14,8 +15,8 @@ func ListAddresses() (*[]domains.Endereco, error) {
 	return enderecos, err
 }
 
-func ListAddressesByUser(userId int) (*[]domains.Endereco, error) {
-	var db = (&database.Repository{}).GetInstance()
+func ListAddressesByUser(ctx context.Context, userId int) (*[]domains.Endereco, error) {
+	var db = (&database.Repository{}).GetInstanceCtx(ctx)
 	enderecos := &[]domains.Endereco{}
 	err := db.Where("usuario_id = ?", userId).
 		Order("id").
@@ -23,28 +24,28 @@ func ListAddressesByUser(userId int) (*[]domains.Endereco, error) {
 	return enderecos, err
 }
 
-func GetAddress(id int) (*domains.Endereco, error) {
-	var db = (&database.Repository{}).GetInstance()
+func GetAddress(ctx context.Context, id int) (*domains.Endereco, error) {
+	var db = (&database.Repository{}).GetInstanceCtx(ctx)
 	endereco := &domains.Endereco{}
 	err := db.Where("id = ?", id).
 		Find(endereco).Error
 	return endereco, err
 }
 
-func RegisterAddress(endereco *domains.Endereco) (*domains.Endereco, error) {
-	var db = (&database.Repository{}).GetInstance()
+func RegisterAddress(ctx context.Context, endereco *domains.Endereco) (*domains.Endereco, error) {
+	var db = (&database.Repository{}).GetInstanceCtx(ctx)
 	err := db.Create(endereco).Error
 	return endereco, err
 }
 
-func UpdateAddress(endereco *domains.Endereco) (*domains.Endereco, error) {
-	var db = (&database.Repository{}).GetInstance()
+func UpdateAddress(ctx context.Context, endereco *domains.Endereco) (*domains.Endereco, error) {
+	var db = (&database.Repository{}).GetInstanceCtx(ctx)
 	err := db.Save(endereco).Error
 	return endereco, err
 }
 
-func DeleteAddress(endereco *domains.Endereco) (error) {
-	var db = (&database.Repository{}).GetInstance()
+func DeleteAddress(ctx context.Context, endereco *domains.Endereco) (error) {
+	var db = (&database.Repository{}).GetInstanceCtx(ctx)
 	err := db.Delete(endereco).Error
 	return err
 }

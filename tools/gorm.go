@@ -6,10 +6,15 @@ import (
 	"strconv"
 	"time"
 
-	_ "github.com/go-sql-driver/mysql"
+	//"github.com/jinzhu/gorm"
+	//_ "github.com/go-sql-driver/mysql"
+	//_ "github.com/jinzhu/gorm/dialects/mysql"
+	//_ "github.com/jinzhu/gorm/dialects/postgres"
+
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
-	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"go.elastic.co/apm/module/apmgorm"
+	_ "go.elastic.co/apm/module/apmgorm/dialects/postgres"
+	_ "go.elastic.co/apm/module/apmgorm/dialects/mysql"
 )
 
 const defaultLifeTime = time.Minute * 5
@@ -86,7 +91,8 @@ func getGormConnection(driverName string, user string, pass string, host string,
 	var err error
 	var dsn string
 	dsn, err = generateDsn(driverName, user, pass, host, port, dbName, sslMode)
-	db, err = gorm.Open(driverName, dsn)
+	db, err = apmgorm.Open(driverName, dsn)
+
 	if err != nil {
 		fmt.Println(err)
 	}
